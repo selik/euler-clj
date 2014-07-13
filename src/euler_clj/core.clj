@@ -71,15 +71,10 @@
   (filter (partial multiple? n)
           (take-while (partial >= (inc (int (Math/sqrt n)))) (primes))))
 
-(defn largest-prime-factor
-  "Largest prime factor of a number; 1 if the number is prime"
-  [n]
-  (apply max (cons 1 (prime-factors n))))
-
 (defn problem-003
   "Largest prime factor of 600851475143"
   []
-  (largest-prime-factor 600851475143))
+  (apply max (cons 1 (prime-factors 600851475143))))
 
 (defn solve-euler
   "Format the answer to Problem N as a string"
