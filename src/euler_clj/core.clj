@@ -1,5 +1,6 @@
 (ns euler-clj.core
-  (:use [clojure.data.priority-map :only [priority-map]])
+  (:use [clojure.data.priority-map :only [priority-map]]
+        [clojure.math.combinatorics :only [cartesian-product]])
   (:gen-class))
 
 (defn multiple?
@@ -62,8 +63,8 @@
   "Lazy sequence of prime numbers generated with Sieve of Eratosthenes"
   []
   (letfn [(prime-candidates [] ;; 2, 3, ... all odd numbers
-            (cons 2 (iterate (partial + 2) 3)))])
-  (prime-sieve (prime-candidates)))
+            (cons 2 (iterate (partial + 2) 3)))]
+    (prime-sieve (prime-candidates))))
 
 (defn prime-factors
   "Lazy sequence of prime factors of a number"
@@ -75,6 +76,23 @@
   "Largest prime factor of 600851475143"
   []
   (apply max (cons 1 (prime-factors 600851475143))))
+
+(defn palindrome?
+  "true if number or string is symmetric"
+  [n]
+  (let [forwards (str n)
+        backwards (clojure.string/reverse (str n))]
+    (= forwards backwards)))
+
+(defn problem-004
+  "Largest palindrome number made from the product of two 3-digit numbers"
+  []
+  (let [two-digit-numbers   (range 10 100)
+        three-digit-numbers (range 100 1000)]
+    (apply max (filter palindrome?
+                       (map (fn [pair] (apply (fn [x y] (* x y)) pair))
+                            (cartesian-product three-digit-numbers
+                                               three-digit-numbers))))))
 
 (defn solve-euler
   "Format the answer to Problem N as a string"
