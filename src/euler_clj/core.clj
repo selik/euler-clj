@@ -53,11 +53,9 @@
          (if (empty? multiples)
            (found-prime)
            (let [[factor smallest-multiple] (first multiples)]
-             (if (< candidate smallest-multiple)
-               (found-prime)
-               (if (= candidate smallest-multiple)
-                 (found-composite factor)
-                 (catch-up-to-candidate factor)))))))))
+             (cond (< candidate smallest-multiple) (found-prime)
+                   (= candidate smallest-multiple) (found-composite factor)
+                   :else (catch-up-to-candidate factor))))))))
 
 (defn primes
   "Lazy sequence of prime numbers generated with Sieve of Eratosthenes"
